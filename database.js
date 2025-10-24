@@ -5,7 +5,7 @@ dotenv.config();
 
 const uri = process.env.MONGODB_URI;
 
-async function main() {
+export async function main() {
 	try {
 		await mongoose.connect(uri);
 		console.log("Connecté à MongoDB Atlas !");
@@ -13,5 +13,5 @@ async function main() {
 		console.error("Erreur :", err);
 	}
 }
-export default mongoose;
+
 main();
