@@ -1,8 +1,28 @@
+import "dotenv/config";
 import express from "express";
-import main from "./database.js";
+import session from "express-session";
+import { main } from "./database.js";
+import securityRoutes from "./Routes/securityRoutes.js";
 
 main();
 const port = 3000;
 const app = express();
 app.use(express.json());
+app.set("trust proxy", 1); // trust first proxy
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false,
+      httpOnly: true,
+      sameSite: "strict",
+      maxAge: 1000 * 60 * 60,
+    },
+  })
+);
+
+app.use("/api/security", securityRoutes);
+
 app.listen(port, () => console.log("Server start on port: " + port));
