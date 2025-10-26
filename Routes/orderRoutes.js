@@ -5,8 +5,8 @@ import { orderSchema, updateOrderSchema } from "../Validator/orderValidator.js";
 import {
 	createOrder,
 	getAllOrders,
-	getOrderById,
-	updateOrder,
+	getOrderByID,
+	updateOrderStatus,
 	deleteOrder,
 } from "../Controller/OrderController.js";
 
@@ -14,8 +14,8 @@ const router = express.Router();
 
 router.post("/", validateReq(orderSchema), createOrder);
 router.get("/", getAllOrders);
-router.get("/:id", getOrderById);
-router.put("/:id", validateReq(updateOrderSchema), updateOrder);
+router.get("/:id", getOrderByID);
+router.put("/:id", validateReq(updateOrderSchema), updateOrderStatus);
 router.delete("/:id", deleteOrder);
 
 export default router;
