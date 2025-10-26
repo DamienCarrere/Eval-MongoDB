@@ -28,7 +28,7 @@ export const getAllOrders = async (req, res) => {
 		const orders = await Order.find()
 			.populate("user", "username email")
 			.populate("items.product", "title price");
-		res.json(orders);
+		res.status(200).json(orders);
 	} catch (err) {
 		res.status(500).json({ message: err.message });
 	}
@@ -37,13 +37,14 @@ export const getAllOrders = async (req, res) => {
 // ------------------------- getOrderByID -----------------------------
 export const getOrderByID = async (req, res) => {
 	try {
-		const order = await Order.findById()
+		const order = await Order.findById(req.params.id)
 			.populate("user", "username email")
 			.populate("items.product", "title price");
 
-		if (!order)
+		if (!order) {
 			return res.status(400).json({ message: "Commande introuvable" });
-		res.json(order);
+		}
+		res.status(200).json(order);
 	} catch (err) {
 		res.status(500).json({ message: err.message });
 	}
@@ -60,10 +61,10 @@ export const updateOrderStatus = async (req, res) => {
 			{ new: true }
 		);
 
-		if (!order)
+		if (!order) {
 			return res.status(400).json({ message: "Commande introuvable" });
-
-		res.json(order);
+		}
+		res.status(200).json(order);
 	} catch (err) {
 		res.status(500).json({ message: err.message });
 	}
@@ -74,8 +75,9 @@ export const deleteOrder = async (req, res) => {
 	try {
 		const order = await Order.findByIdAndDelete(req.params.id);
 
-		if (!order)
+		if (!order) {
 			return res.status(400).json({ message: "Commande introuvable" });
+		}
 		res.status(200).json({ message: "Commande supprimée" });
 	} catch (err) {
 		res.status(500).json({ message: err.message });
