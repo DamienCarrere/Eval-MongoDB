@@ -13,11 +13,12 @@ export const orderSchema = Joi.object({
 		.min(1)
 		.required(),
 
-	total: Joi.number().min(0).required(),
+	total: Joi.number().min(0).optional(),
 
 	status: Joi.string()
 		.valid("En attente", "En cours d'expédition", "Annulé", "Livré")
-		.default("En attente"),
+		.default("En attente")
+		.optional(),
 });
 
 export const updateOrderSchema = Joi.object({
@@ -28,9 +29,10 @@ export const updateOrderSchema = Joi.object({
 		})
 	),
 
-	total: Joi.number().min(0),
+	total: Joi.number().min(0).optional(),
 
 	status: Joi.string()
 		.valid("En attente", "En cours d'expédition", "Annulé", "Livré")
-		.default("En attente"),
+		.default("En attente")
+		.optional(),
 }).min(1);
