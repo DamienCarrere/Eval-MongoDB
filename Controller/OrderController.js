@@ -1,9 +1,12 @@
 import Order from "../Model/Order.js";
+import Product from "../Model/Product.js";
 
 // ------------------------- createOrder -----------------------------
 export const createOrder = async (req, res) => {
 	try {
-		const { user, items, total } = req.body;
+		const { user, items } = req.body;
+
+		let total = 0;
 
 		if (!user) {
 			return res
@@ -13,10 +16,33 @@ export const createOrder = async (req, res) => {
 			return res.status(400).json({ message: "Commande invalide" });
 		}
 
-		const order = new Order({ user, items, total });
+		for (const item of items) {
+			const product = await Product.findById(item.product);
 
-		const saveOrder = await order.save();
-		res.status(200).json(saveOrder);
+			if (!product) {
+				return res
+					.status(400)
+					.json({ message: `Produit ${item.product} introuvable` });
+			} else if (product.stock < item.quantity) {
+				return res.status(400).json({
+					message: `Stock insuffisant de ${item.product}, stock disponible: ${product.stock}, quantité demandée:${item.quantity}`,
+				});
+			}
+
+			total += product.price * item.quantity;
+		}
+
+		const order = new Order({ user, items, total, status: "En attente" });
+
+		await order.save();
+
+		for (const item of items) {
+			await Product.findByIdAndUpdate(item.product, {
+				$inc: { stock: -item.quantity },
+			});
+		}
+
+		res.status(200).json({ message: "Commande créée avec succès", order });
 	} catch (err) {
 		res.status(500).json({ message: err.message });
 	}
