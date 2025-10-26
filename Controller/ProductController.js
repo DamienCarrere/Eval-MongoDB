@@ -4,12 +4,6 @@ export const createProduct = async (req, res) => {
 	try {
 		const { title, description, price, category, stock } = req.body;
 
-		if (!title || !price || !category) {
-			return res.status(400).json({
-				message: "Le titre, le prix et la catégorie sont obligatoires",
-			});
-		}
-
 		const product = new Product({
 			title,
 			description,
