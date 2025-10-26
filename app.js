@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express from "express";
 import session from "express-session";
+import cors from "cors";
 import { main } from "./database.js";
 import securityRoutes from "./Routes/securityRoutes.js";
 import categoryRoutes from "./Routes/categoryRoutes.js";
@@ -11,6 +12,12 @@ main();
 const port = 3000;
 const app = express();
 app.use(express.json());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 app.set("trust proxy", 1); // trust first proxy
 app.use(
 	session({
