@@ -7,7 +7,8 @@ export const createUser = async (res, req) => {
 		//ajouter etapes verif ici
 
 		const user = new User({ username, email, password });
-		await user.save();
+		const saveUser = await user.save();
+		res.status(200).json(saveUser);
 	} catch (err) {
 		res.status(500).json({ message: err.message });
 	}
@@ -16,7 +17,7 @@ export const createUser = async (res, req) => {
 export const getAllUsers = async (res, req) => {
 	try {
 		const allUsers = User.find();
-		res.json(allUsers);
+		res.status(200).json(allUsers);
 	} catch (err) {
 		res.status(500).json({ message: err.message });
 	}
@@ -29,7 +30,7 @@ export const getUserByID = async (res, req) => {
 		if (!userByID) {
 			return res.status(418);
 		}
-		res.json(userByID);
+		res.status(200).json(userByID);
 	} catch (err) {
 		res.status(500).json({ message: err.message });
 	}
@@ -53,7 +54,7 @@ export const updateUser = async (res, req) => {
 			return res.status(418);
 		}
 
-		res.json(user);
+		res.status(200).json(user);
 	} catch (err) {
 		res.status(500).json({ message: err.message });
 	}
@@ -67,7 +68,7 @@ export const deleteUser = async (res, req) => {
 			return res.status(418);
 		}
 
-		res.json(user);
+		res.status(200).json(user);
 	} catch (err) {
 		res.status(500).json({ message: err.message });
 	}
