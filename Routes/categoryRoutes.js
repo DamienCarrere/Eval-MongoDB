@@ -1,4 +1,7 @@
 import express from "express";
+import { validateReq } from "../Middleware/validateReqMiddleware.js";
+import { categorySchema } from "../Validator/categoryValidator.js";
+
 import {
 	createCategory,
 	getAllCategories,
@@ -9,10 +12,10 @@ import {
 
 const router = express.Router();
 
-router.post("/", createCategory);
+router.post("/", validateReq(categorySchema), createCategory);
 router.get("/", getAllCategories);
 router.get("/:id", getCategoryByID);
-router.put("/:id", updateCategory);
+router.put("/:id", validateReq(categorySchema), updateCategory);
 router.delete("/:id", deleteCategory);
 
 export default router;
