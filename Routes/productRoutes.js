@@ -1,4 +1,10 @@
 import express from "express";
+import { validateReq } from "../Middleware/validateReqMiddleware.js";
+import {
+	productSchema,
+	updateProductSchema,
+} from "../Validator/productValidator.js";
+
 import {
 	createProduct,
 	getAllProducts,
@@ -9,10 +15,10 @@ import {
 
 const router = express.Router();
 
-router.post("/", createProduct);
+router.post("/", validateReq(productSchema), createProduct);
 router.get("/", getAllProducts);
 router.get("/:id", getProductByID);
 router.put("/:id", updateProduct);
-router.delete("/:id", deleteProduct);
+router.delete("/:id", validateReq(updateProductSchema), deleteProduct);
 
 export default router;
