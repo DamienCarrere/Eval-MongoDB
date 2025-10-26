@@ -53,7 +53,9 @@ export const login = async function (req, res) {
       { expiresIn: 3600 }
     );
 
-    res.status(200).json({ ok: true, message: "Succesfully logged in" });
+    res
+      .status(200)
+      .json({ ok: true, message: "Succesfully logged in", user: user });
   } catch (error) {
     res.status(500).json({ ok: false, message: "Internal server error" });
   }
@@ -66,4 +68,8 @@ export const logout = function (req, res) {
   } catch (error) {
     res.status(500).json({ ok: false, message: "Internal server error" });
   }
+};
+
+export const check = function (req, res) {
+  res.status(200).json({ ok: true, user: req.session.user });
 };

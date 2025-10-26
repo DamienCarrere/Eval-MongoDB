@@ -18,6 +18,8 @@ router.post(
   SecurityController.login
 );
 
+router.get("/check", authCheck, SecurityController.check);
+
 router.get("/logout", authCheck, SecurityController.logout);
 
 export default router;
