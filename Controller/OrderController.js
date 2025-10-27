@@ -111,7 +111,9 @@ export const deleteOrder = async (req, res) => {
 // ------------------------- OrderByUserId -----------------------------
 export const getOrderByUserID = async (req, res) => {
   try {
-    const orders = await Order.find({ user: req.user.id });
+    const orders = await Order.find({ user: req.user.id }).populate(
+      "items.product"
+    );
     res.status(200).json({ ok: true, data: orders });
   } catch (error) {
     res.status(500).json({ ok: false, message: "Internal server error" });
