@@ -48,14 +48,22 @@ export const login = async function (req, res) {
         id: user._id,
         email: user.email,
         username: user.username,
+        isAdmin: user.isAdmin,
       },
       process.env.JWT_SECRET,
       { expiresIn: 3600 }
     );
 
-    res
-      .status(200)
-      .json({ ok: true, message: "Succesfully logged in", user: user });
+    res.status(200).json({
+      ok: true,
+      message: "Succesfully logged in",
+      user: {
+        id: user._id,
+        email: user.email,
+        username: user.username,
+        isAdmin: user.isAdmin,
+      },
+    });
   } catch (error) {
     res.status(500).json({ ok: false, message: "Internal server error" });
   }
@@ -71,5 +79,5 @@ export const logout = function (req, res) {
 };
 
 export const check = function (req, res) {
-  res.status(200).json({ ok: true, user: req.session.user });
+  res.status(200).json({ ok: true, user: req.user });
 };
