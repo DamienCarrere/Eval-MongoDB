@@ -55,8 +55,8 @@ router.get("/api/admin/categories", authCheck, adminCheck, async (req, res) => {
 router.get("/api/admin/orders", authCheck, adminCheck, async (req, res) => {
 	try {
 		const orders = await Order.find({})
-			.populate("user", "name email")
-			.populate("products.product", "title price");
+			.populate("user", "email username")
+			.populate("items.product", "title price");
 		res.json({ ok: true, orders });
 	} catch (err) {
 		res.status(500).json({
